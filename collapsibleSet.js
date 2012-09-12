@@ -10,7 +10,7 @@ define( [ "jquery", "../jquery.mobile.widget", "./collapsible" ], function( $ ) 
 (function( $, undefined ) {
 
 $.widget( "mobile.collapsibleset", $.mobile.widget, {
-	options: {	
+	options: {
 		initSelector: ":jqmData(role='collapsible-set')",
 		// add grid and inset (otherwise undefined)
 		grid: null,
@@ -20,7 +20,6 @@ $.widget( "mobile.collapsibleset", $.mobile.widget, {
 		var $el = this.element.addClass( "ui-collapsible-set" ),
 			o = $.extend({  direction: $el.jqmData("type") || "" }, this.options )
 			toggleCorners = o.direction == "horizontal" ? [ "ui-corner-tl ui-corner-bl","ui-corner-tr ui-corner-br" ] : ["ui-corner-top ", "ui-corner-bottom" ];
-		
 		// add horizontal class 
 		if ( o.direction == "horizontal" ) {
 			$el.addClass("ui-collapsible-set-horizontal").grid({ grid: this.options.grid });
@@ -40,7 +39,6 @@ $.widget( "mobile.collapsibleset", $.mobile.widget, {
 		if ( !!o.inset && o.direction == "horizontal" ){
 			$el.addClass( "ui-collapsible-no-inset" );
 		}
-		
 		// Initialize the collapsible set if it's not already initialized
 		if ( !$el.jqmData( "collapsiblebound" ) ) {
 			$el
@@ -84,8 +82,7 @@ $.widget( "mobile.collapsibleset", $.mobile.widget, {
 						// regular
 						} else if (collapsible.jqmData( "collapsible-last" ) && !!o.inset ) {
 							tog();
-						} 
-
+						}
 				})
 				.bind( "expand", function( event ) {
 					var closestCollapsible = $( event.target )
@@ -150,3 +147,6 @@ $( document ).bind( "pagecreate create", function( e ) {
 });
 
 })( jQuery );
+//>>excludeStart("jqmBuildExclude", pragmas.jqmBuildExclude);
+});
+//>>excludeEnd("jqmBuildExclude");

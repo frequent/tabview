@@ -19,8 +19,8 @@ $.widget( "mobile.collapsible", $.mobile.widget, {
 		contentTheme: null,
 		inset: true,
 		mini: false,
-		initSelector: ":jqmData(role='collapsible')",
 		direction: ""
+		initSelector: ":jqmData(role='collapsible')",
 	},
 	_create: function() {
 
@@ -80,7 +80,7 @@ $.widget( "mobile.collapsible", $.mobile.widget, {
 			if ( !o.theme ) {
 				o.theme = $.mobile.getInheritedTheme( $el, "c" );
 			}
-		}
+		}	
 		if ( !!o.inset ) {
 			collapsible.addClass( "ui-collapsible-inset" );
 		}
@@ -138,7 +138,7 @@ $.widget( "mobile.collapsible", $.mobile.widget, {
 
 					$this.toggleClass( "ui-collapsible-collapsed", isCollapse );
 					collapsibleContent.toggleClass( "ui-collapsible-content-collapsed", isCollapse ).attr( "aria-hidden", isCollapse );
-				
+					
 					// prevent last collapsible in set to get ui-corner-bottom
 					if ( contentTheme && !!o.inset && ( !collapsibleSet.length || collapsible.jqmData( "collapsible-last" ) )  && o.direction != "horizontal" ) {
 						collapsibleHeading
@@ -173,3 +173,6 @@ $( document ).bind( "pagecreate create", function( e ) {
 });
 
 })( jQuery );
+//>>excludeStart("jqmBuildExclude", pragmas.jqmBuildExclude);
+});
+//>>excludeEnd("jqmBuildExclude");
