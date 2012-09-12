@@ -11,8 +11,8 @@ Add `data-type="horizontal"` to a collapsible set. Currently a maximum of 5 tabs
 2. Options
 Tabview supports most of the regular collapsible set options:
 
-- `data-inset="false"` = remove corner, stretch tabs full screen
-- `data-collapsedIcon/data-expandedIcon="___"` = by default, tabs are without icons. To add, specifiy collapsed and expanded icon like in a regular collapsible
+- `data-inset="false"` = remove corners, stretch tabs full screen
+- `data-collapsedIcon/data-expandedIcon="___"` = by default tabs are without icons. To add icons, specifiy collapsed/expanded icons on the collapsible
 - `data-content-theme="_"` = add borders and background to the collapsible content section
 
 3. Demo
