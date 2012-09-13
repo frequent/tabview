@@ -20,7 +20,7 @@ $.widget( "mobile.collapsible", $.mobile.widget, {
 		inset: true,
 		mini: false,
 		// xxx frequent - 1. add direction
-		direction: ""
+		direction: "",
 		initSelector: ":jqmData(role='collapsible')",
 	},
 	_create: function() {
