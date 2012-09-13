@@ -28,7 +28,7 @@ $.widget( "mobile.collapsibleset", $.mobile.widget, {
 			// xxx frequent - 4. add toggleCorners so regular and horizontal collapsibles can be handled with a single array
 			toggleCorners = o.direction == "horizontal" ? [ "ui-corner-tl ui-corner-bl","ui-corner-tr ui-corner-br" ] : ["ui-corner-top ", "ui-corner-bottom" ];
 
-		// xxx frequent - 5. add horizontal class
+		// xxx frequent - 5. add horizontal class and grid
 		if ( o.direction == "horizontal" ) {
 			$el.addClass("ui-collapsible-set-horizontal").grid({ grid: this.options.grid });
 		}
@@ -43,17 +43,14 @@ $.widget( "mobile.collapsibleset", $.mobile.widget, {
 		if ( $el.jqmData( "inset" ) !== undefined ) {
 			o.inset = $el.jqmData( "inset" );
 		}
-		// xxx frequent - 6. removed, because o.inset will not be in options, so it
-		// it also is "undefined" if data-inset="false" is specified 
-		// on the set.
+		// xxx frequent - 6. set in options/above
 		// [Removed] o.inset = o.inset !== undefined ? o.inset : true;
 		
 		// xxx frequent - 7. not happy with this. I need a class to set negative 
-		// margin on the collapsibe, when data-inset="false"
-		// regular collapsibleSets set this on the h2 tag, 
+		// margin on the collapsibe, when data-inset="false".
+		// regular collapsibleSets set margin on the h2 tag, 
 		// which I can't because the h2 tags will be floated
-		// along with the collapsibles. This is only used to
-		// switch between negative/no margin depending on inset
+		// along with the collapsibles. 
 		if ( !!o.inset && o.direction == "horizontal" ){
 			$el.addClass( "ui-collapsible-no-inset" );
 		}
@@ -65,28 +62,21 @@ $.widget( "mobile.collapsibleset", $.mobile.widget, {
 					var isCollapse = ( event.type === "collapse" ),
 						collapsible = $( event.target ).closest( ".ui-collapsible" ),
 						widget = collapsible.data( "collapsible" ),
-						// xxx - frequent - 8. Because we need to toggle first and last collapsible
-						// we need some kind of index, so these can be indentified 
-						// on expand/collapse
+						// xxx - frequent - 8. need an index to identify first and last collapsible in set
 						index = $el.find('.ui-collapsible').index( collapsible ),
 						// xxx -frequent - 9. Default class to toggle (will be overwritten for horizontal tabs )
 						togClass = "ui-corner-bottom",
 
-						// xxx frequent - 10. Since two collapsibles have to be toggled, I have put the
-						// "toggle routine" inside a function, which on regular collapsibles
-						// toggles corners on ONE collaspible, while on horiztonal
-						// collapsibles, FIRST and LAST collapsible will get their
-						// corners toggled
+						// xxx frequent - 10. Corner toggle routine, now inside a function
+						// regular collapsible = toggles corners on CLICKED collapsible
+						// horizontal collapsible = always toggle FIRST and LAST collapsible corners
 						tog = function() {	
-							// xxx frequent - 10b. only touch corners if inset="true"
+							// xxx frequent - 10b. only if inset="true"
 							if ( !!o.inset ){
-								// xxx frequent - 10c. On horizontal collapsibles I'm resetting collapsible to include 
-								// TWO collapsibles (first and last). The for-loop therefore runs either
-								// once or twice
+								// xxx frequent - 10c. collapsible will be set to CLICKED or FIRST & LAST
 								for ( var i = 0; i < collapsible.length; i++ ){
 									index = i;
-									// xxx frequent - 10d. override bottom-corner toggle class on horizontal collapsibles
-									//  				   toggle corner-bl on FIRST, corner-br on LAST collapsible
+									// xxx frequent - 10d. override bottom corners to bottom-left/right on horizontal
 									togClass = o.direction == "horizontal" ? ( index == 0 ? "ui-corner-bl" : "ui-corner-br") : "ui-corner-bottom";
 									collapsible.eq(i).find( widget.options.heading ).first()
 										.find( "a" ).first()
@@ -96,38 +86,35 @@ $.widget( "mobile.collapsibleset", $.mobile.widget, {
 								}
 							}
 						};
-					// xxx frequent - 11. toggle collapsible-content bottom corners on content. This needs to be outside
-					// of the tog() function, otherwise only first and last collapsible
-					// get their corners toggled
+					// xxx frequent - 11. This needs to be outside of tog()
+					// otherwise only first and last collapsible content gets
+					// bottom corners toggled
 					if ( !!o.inset ){
 						collapsible.find( ".ui-collapsible-content" ).toggleClass( "ui-corner-bottom", !isCollapse );
 						}
 
-					// xxx frequent - 12. horizontal handler = this calls the tog() function
-					// for both regular and horizontal collapsibles						
+					// xxx frequent - 12. horizontal handler = calls tog()					
 					if ( o.direction == "horizontal" ){
 						// xxx frequent - 12b. Overwrite collapsible to include FIRST and LAST collapsible
-						// = No matter which collapsible is clicked, 
-						// in a horizontal collapsible, first and last always get
-						// their corners toggled
+						// no matter which collapsible is clicked 
 						collapsible = $el.find('.ui-collapsible').first().add( $el.find('.ui-collapsible').eq( $el.find('.ui-collapsible').length-1)  );
 
 						// xxx frequent - 12c. set isCollapse and call tog()
 						if ( event.type == "expand" ){
 							isCollapse = false;
 							tog();
-						// xxx frequent - 12d. now why did I do this check here...
+						// xxx frequent - 12d. why did I do this check here...
 						// probably to detect when all collapsibles are collapsed
 						} else if ( $el.find('.ui-collapsible').length == $el.find('.ui-collapsible-collapsed').length ) {
 							isCollapse = true;
 							tog();
 						}
-					// xxx frequent - 12e. regular collaspibles
+					// xxx frequent - 12e. regular collapsibles
 					} else if (collapsible.jqmData( "collapsible-last" ) && !!o.inset ) {
 						tog();
 					}
 
-					// xxx frequent - 12f removed old corner handle (now in tog() )
+					// xxx frequent - 12f [removed to tog()]
 					// if ( collapsible.jqmData( "collapsible-last" ) && !!o.inset ) {
 					//	collapsible.find( ".ui-collapsible-heading" ).first()
 					//		.find( "a" ).first()
