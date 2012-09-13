@@ -13,10 +13,10 @@ $.widget( "mobile.collapsibleset", $.mobile.widget, {
 	options: {
 		initSelector: ":jqmData(role='collapsible-set')"
 		// xxx frequent - 1. add jqm grid
-		//				  2. add inset, because otherwise it is not inherited as an option
-		//				     I think this is a bug in JQM, because without declaring here, 
-		//					 o.inset will be "undefined" when using data-inset="false", 
-		//					 when it should turn out to "false"
+		// xxx frequent - 2. add inset, because otherwise it is not inherited as an option
+		// I think this is a bug in JQM, because without declaring here, 
+		// o.inset will be "undefined" when using data-inset="false", 
+		// when it should turn out to "false"
 		grid: null,
 		inset: true
 	},
@@ -44,16 +44,16 @@ $.widget( "mobile.collapsibleset", $.mobile.widget, {
 			o.inset = $el.jqmData( "inset" );
 		}
 		// xxx frequent - 6. removed, because o.inset will not be in options, so it
-		//					 it also is "undefined" if data-inset="false" is specified 
-		//					 on the set.
+		// it also is "undefined" if data-inset="false" is specified 
+		// on the set.
 		// [Removed] o.inset = o.inset !== undefined ? o.inset : true;
 		
 		// xxx frequent - 7. not happy with this. I need a class to set negative 
-		//					 margin on the collapsibe, when data-inset="false"
-		//					 regular collapsibleSets set this on the h2 tag, 
-		// 					 which I can't because the h2 tags will be floated
-		//					 along with the collapsibles. This is only used to
-		//					 switch between negative/no margin depending on inset
+		// margin on the collapsibe, when data-inset="false"
+		// regular collapsibleSets set this on the h2 tag, 
+		// which I can't because the h2 tags will be floated
+		// along with the collapsibles. This is only used to
+		// switch between negative/no margin depending on inset
 		if ( !!o.inset && o.direction == "horizontal" ){
 			$el.addClass( "ui-collapsible-no-inset" );
 		}
@@ -66,23 +66,23 @@ $.widget( "mobile.collapsibleset", $.mobile.widget, {
 						collapsible = $( event.target ).closest( ".ui-collapsible" ),
 						widget = collapsible.data( "collapsible" ),
 						// xxx - frequent - 8. Because we need to toggle first and last collapsible
-						//					 we need some kind of index, so these can be indentified 
-						// 					 on expand/collapse
+						// we need some kind of index, so these can be indentified 
+						// on expand/collapse
 						index = $el.find('.ui-collapsible').index( collapsible ),
 						// xxx -frequent - 9. Default class to toggle (will be overwritten for horizontal tabs )
 						togClass = "ui-corner-bottom",
 
 						// xxx frequent - 10. Since two collapsibles have to be toggled, I have put the
-						//					  "toggle routine" inside a function, which on regular collapsibles
-						// 					  toggles corners on ONE collaspible, while on horiztonal
-						//					  collapsibles, FIRST and LAST collapsible will get their
-						//					  corners toggled
+						// "toggle routine" inside a function, which on regular collapsibles
+						// toggles corners on ONE collaspible, while on horiztonal
+						// collapsibles, FIRST and LAST collapsible will get their
+						// corners toggled
 						tog = function() {	
 							// xxx frequent - 10b. only touch corners if inset="true"
 							if ( !!o.inset ){
 								// xxx frequent - 10c. On horizontal collapsibles I'm resetting collapsible to include 
-								//				  TWO collapsibles (first and last). The for-loop therefore runs either
-								//				  once or twice
+								// TWO collapsibles (first and last). The for-loop therefore runs either
+								// once or twice
 								for ( var i = 0; i < collapsible.length; i++ ){
 									index = i;
 									// xxx frequent - 10d. override bottom-corner toggle class on horizontal collapsibles
@@ -97,19 +97,19 @@ $.widget( "mobile.collapsibleset", $.mobile.widget, {
 							}
 						};
 					// xxx frequent - 11. toggle collapsible-content bottom corners on content. This needs to be outside
-					//					  of the tog() function, otherwise only first and last collapsible
-					//					  get their corners toggled
+					// of the tog() function, otherwise only first and last collapsible
+					// get their corners toggled
 					if ( !!o.inset ){
 						collapsible.find( ".ui-collapsible-content" ).toggleClass( "ui-corner-bottom", !isCollapse );
 						}
 
 					// xxx frequent - 12. horizontal handler = this calls the tog() function
-					//					  for both regular and horizontal collapsibles						
+					// for both regular and horizontal collapsibles						
 					if ( o.direction == "horizontal" ){
 						// xxx frequent - 12b. Overwrite collapsible to include FIRST and LAST collapsible
-						//				  = No matter which collapsible is clicked, 
-						//				  in a horizontal collapsible, first and last always get
-						//				  their corners toggled
+						// = No matter which collapsible is clicked, 
+						// in a horizontal collapsible, first and last always get
+						// their corners toggled
 						collapsible = $el.find('.ui-collapsible').first().add( $el.find('.ui-collapsible').eq( $el.find('.ui-collapsible').length-1)  );
 
 						// xxx frequent - 12c. set isCollapse and call tog()
@@ -117,7 +117,7 @@ $.widget( "mobile.collapsibleset", $.mobile.widget, {
 							isCollapse = false;
 							tog();
 						// xxx frequent - 12d. now why did I do this check here...
-						//					   probably to detect when all collapsibles are collapsed
+						// probably to detect when all collapsibles are collapsed
 						} else if ( $el.find('.ui-collapsible').length == $el.find('.ui-collapsible-collapsed').length ) {
 							isCollapse = true;
 							tog();
