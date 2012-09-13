@@ -5121,9 +5121,9 @@ $.widget( "mobile.collapsible", $.mobile.widget, {
 		contentTheme: null,
 		inset: true,
 		mini: false,
-		initSelector: ":jqmData(role='collapsible')",
-		// xxx frequent - add direction
-		direction: ""
+		// xxx frequent - 1. add direction
+		direction: "",
+		initSelector: ":jqmData(role='collapsible')"
 	},
 	_create: function() {
 
@@ -5135,7 +5135,6 @@ $.widget( "mobile.collapsible", $.mobile.widget, {
 			expandedIcon = $el.jqmData( "expanded-icon" ) || o.expandedIcon,
 			collapsibleContent = collapsible.wrapInner( "<div class='ui-collapsible-content'></div>" ).children( ".ui-collapsible-content" ),
 			collapsibleSet = $el.closest( ":jqmData(role='collapsible-set')" ).addClass( "ui-collapsible-set" );
-		
 		// Replace collapsibleHeading if it's a legend
 		if ( collapsibleHeading.is( "legend" ) ) {
 			collapsibleHeading = $( "<div role='heading'>"+ collapsibleHeading.html() +"</div>" ).insertBefore( collapsibleHeading );
@@ -5144,7 +5143,7 @@ $.widget( "mobile.collapsible", $.mobile.widget, {
 
 		// If we are in a collapsible set
 		if ( collapsibleSet.length ) {
-			// // xxx frequent - check for direction
+			// xxx frequent - 2. check for direction
 			if ( collapsibleSet.jqmData( "type" ) == "horizontal" ){
 				o.direction = "horizontal";
 			}
@@ -5184,12 +5183,13 @@ $.widget( "mobile.collapsible", $.mobile.widget, {
 				o.theme = $.mobile.getInheritedTheme( $el, "c" );
 			}
 		}
-		if ( !!o.inset  ) {
+		if ( !!o.inset ) {
 			collapsible.addClass( "ui-collapsible-inset" );
 		}
+
 		collapsibleContent.addClass( ( o.contentTheme ) ? ( "ui-body-" + o.contentTheme ) : "");
 
-		// xxx frequent - default to no-icon by default
+		// xxx frequent - 3. set default to "no icon" in horizontal collapsbles
 		collapsedIcon = $el.jqmData( "collapsed-icon" ) || o.collapsedIcon || ( o.direction == "horizontal" ? undefined : "plus" );
 		expandedIcon = $el.jqmData( "expanded-icon" ) || o.expandedIcon || ( o.direction == "horizontal" ? undefined : "minus" );
 
@@ -5205,14 +5205,14 @@ $.widget( "mobile.collapsible", $.mobile.widget, {
 				.buttonMarkup({
 					shadow: false,
 					corners: false,
-					// XXX FREQUENT - remove iconpos, if no collapsed-icon set, WHAT with expandedIcon?
+					// xxx - frequent 4. remove iconpos in horizontal sets, if no collapsed-icon is set
 					iconpos: $el.jqmData( "iconpos" ) || o.iconPos || ( collapsedIcon == undefined ? null : "left" ),
 					icon: collapsedIcon,
 					mini: o.mini,
 					theme: o.theme
 				});
 
-		if ( !!o.inset ) {	
+		if ( !!o.inset ) {				
 			collapsibleHeading
 				.find( "a" ).first().add( ".ui-btn-inner", $el )
 					.addClass( "ui-corner-top ui-corner-bottom" );
@@ -5228,20 +5228,22 @@ $.widget( "mobile.collapsible", $.mobile.widget, {
 
 					event.preventDefault();
 					collapsibleHeading
-						.toggleClass( "ui-collapsible-heading-collapsed", isCollapse)
+						.toggleClass( "ui-collapsible-heading-collapsed", isCollapse )
 						.find( ".ui-collapsible-heading-status" )
 							.text( isCollapse ? o.expandCueText : o.collapseCueText )
 						.end()
 						.find( ".ui-icon" )
 							.toggleClass( "ui-icon-" + expandedIcon, !isCollapse )
-							.toggleClass( "ui-icon-" + collapsedIcon, isCollapse )
+							// logic or cause same icon for expanded/collapsed state would remove the ui-icon-class
+							.toggleClass( "ui-icon-" + collapsedIcon, ( isCollapse || expandedIcon === collapsedIcon )  )
 						.end()
+						// xxx frequent - 5. maintain active class on active tabs in horizontal collapsibles
 						.find( "a" ).first()[o.direction == 'horizontal' ? 'toggleClass':'removeClass']( $.mobile.activeBtnClass , ( o.direction == "horizontal" ? !isCollapse : false ) );
-
+						
 					$this.toggleClass( "ui-collapsible-collapsed", isCollapse );
 					collapsibleContent.toggleClass( "ui-collapsible-content-collapsed", isCollapse ).attr( "aria-hidden", isCollapse );
-					
-					// xxx frequent - prevent last collapsible in set to get ui-corner-bottom
+
+					// xxx frequent - 6. prevent last collapsible from getting bottom corners
 					if ( contentTheme && !!o.inset && ( !collapsibleSet.length || collapsible.jqmData( "collapsible-last" ) )  && o.direction != "horizontal" ) {
 						collapsibleHeading
 							.find( "a" ).first().add( collapsibleHeading.find( ".ui-btn-inner" ) )
@@ -5257,8 +5259,10 @@ $.widget( "mobile.collapsible", $.mobile.widget, {
 			.bind( "tap", function( event ) {
 				collapsibleHeading.find( "a" ).first().addClass( $.mobile.activeBtnClass );
 			})
-			.bind( "click", function( event ) {		
+			.bind( "click", function( event ) {
+
 				var type = collapsibleHeading.is( ".ui-collapsible-heading-collapsed" ) ? "expand" : "collapse";
+
 				collapsible.trigger( type );
 
 				event.preventDefault();
@@ -5277,21 +5281,29 @@ $( document ).bind( "pagecreate create", function( e ) {
 (function( $, undefined ) {
 
 $.widget( "mobile.collapsibleset", $.mobile.widget, {
-	options: {	
+	options: {
 		initSelector: ":jqmData(role='collapsible-set')",
-		// XXX FRE - tab viewer add grid and inset, otherwise always undefined
+		// xxx frequent - 1. add jqm grid
+		// xxx frequent - 2. add inset, because otherwise it is not inherited as an option
+		// I think this is a bug in JQM, because without declaring here, 
+		// o.inset will be "undefined" when using data-inset="false", 
+		// when it should turn out to "false"
 		grid: null,
 		inset: true
 	},
 	_create: function() {
 		var $el = this.element.addClass( "ui-collapsible-set" ),
-			o = $.extend({  direction: $el.jqmData("type") || "" }, this.options )
-			toggleCorners = o.direction == "horizontal" ? [ "ui-corner-tl ui-corner-bl","ui-corner-tr ui-corner-br" ] : ["ui-corner-top ", "ui-corner-bottom" ];
-		
-		// XXX FRE - add horizontal class 
+			// xxx frequent - 3. add direction as additional option
+			// [removed] o = this.options;
+			o = $.extend({  direction: $el.jqmData("type") || "" }, this.options );
+			
+		// xxx frequent - 4. add toggleCorners so regular and horizontal collapsibles can be handled with a single array
+		toggleCorners = o.direction == "horizontal" ? [ "ui-corner-tl ui-corner-bl","ui-corner-tr ui-corner-br" ] : ["ui-corner-top ", "ui-corner-bottom" ];
+
+		// xxx frequent - 5. add horizontal class and grid
 		if ( o.direction == "horizontal" ) {
 			$el.addClass("ui-collapsible-set-horizontal").grid({ grid: this.options.grid });
-		}	
+		}
 		// Inherit the theme from collapsible-set
 		if ( !o.theme ) {
 			o.theme = $.mobile.getInheritedTheme( $el, "c" );
@@ -5300,17 +5312,20 @@ $.widget( "mobile.collapsibleset", $.mobile.widget, {
 		if ( !o.contentTheme ) {
 			o.contentTheme = $el.jqmData( "content-theme" );
 		}
-		
 		if ( $el.jqmData( "inset" ) !== undefined ) {
 			o.inset = $el.jqmData( "inset" );
 		}
-		// no more need? o.inset = o.inset !== undefined ? o.inset : true;
-
-		// xxx frequent - can't assign margin-left/right: -15px to h2 elements, because they float if horizontal
+		// xxx frequent - 6. set in options/above
+		// [Removed] o.inset = o.inset !== undefined ? o.inset : true;
+		
+		// xxx frequent - 7. not happy with this. I need a class to set negative 
+		// margin on the collapsibe, when data-inset="false".
+		// regular collapsibleSets set margin on the h2 tag, 
+		// which I can't because the h2 tags will be floated
+		// along with the collapsibles. 
 		if ( !!o.inset && o.direction == "horizontal" ){
 			$el.addClass( "ui-collapsible-no-inset" );
 		}
-		
 		// Initialize the collapsible set if it's not already initialized
 		if ( !$el.jqmData( "collapsiblebound" ) ) {
 			$el
@@ -5319,13 +5334,21 @@ $.widget( "mobile.collapsibleset", $.mobile.widget, {
 					var isCollapse = ( event.type === "collapse" ),
 						collapsible = $( event.target ).closest( ".ui-collapsible" ),
 						widget = collapsible.data( "collapsible" ),
+						// xxx - frequent - 8. need an index to identify first and last collapsible in set
 						index = $el.find('.ui-collapsible').index( collapsible ),
+						// xxx -frequent - 9. Default class to toggle (will be overwritten for horizontal tabs )
 						togClass = "ui-corner-bottom",
-						// handler for toggling corners 
+
+						// xxx frequent - 10. Corner toggle routine, now inside a function
+						// regular collapsible = toggles corners on CLICKED collapsible
+						// horizontal collapsible = always toggle FIRST and LAST collapsible corners
 						tog = function() {	
+							// xxx frequent - 10b. only if inset="true"
 							if ( !!o.inset ){
+								// xxx frequent - 10c. collapsible will be set to CLICKED or FIRST & LAST
 								for ( var i = 0; i < collapsible.length; i++ ){
 									index = i;
+									// xxx frequent - 10d. override bottom corners to bottom-left/right on horizontal
 									togClass = o.direction == "horizontal" ? ( index == 0 ? "ui-corner-bl" : "ui-corner-br") : "ui-corner-bottom";
 									collapsible.eq(i).find( widget.options.heading ).first()
 										.find( "a" ).first()
@@ -5335,27 +5358,44 @@ $.widget( "mobile.collapsibleset", $.mobile.widget, {
 								}
 							}
 						};
-						if ( !!o.inset ){
-							collapsible.find( ".ui-collapsible-content" ).toggleClass( "ui-corner-bottom", !isCollapse );
+					
+					// xxx frequent - 11. This needs to be outside of tog()
+					// otherwise only first and last collapsible content gets
+					// bottom corners toggled
+					if ( !!o.inset && ( o.direction == "horizontal" || collapsible.jqmData( "collapsible-last" ) ) ) {
+						collapsible.find( ".ui-collapsible-content" ).toggleClass( "ui-corner-bottom", !isCollapse );
 						}
-						// horizontal handle = always toggle first/last collapsible 
-						if ( o.direction == "horizontal" ){
-							// stuff two elements into collapsible
-							collapsible = $el.find('.ui-collapsible').first().add( $el.find('.ui-collapsible').eq( $el.find('.ui-collapsible').length-1)  );
-							// expand
-							if ( event.type == "expand" ){
-								isCollapse = false;
-								tog();
-							// catch single collapse (not the collapse events firing together with expand!
-							} else if ( $el.find('.ui-collapsible').length == $el.find('.ui-collapsible-collapsed').length ) {
-								isCollapse = true;
-								tog();
-							}
-						// regular JQM collapsible-set
-						} else if (collapsible.jqmData( "collapsible-last" ) && !!o.inset ) {
-							tog();
-						} 
 
+					// xxx frequent - 12. horizontal handler = calls tog()					
+					if ( o.direction == "horizontal" ){
+						// xxx frequent - 12b. Overwrite collapsible to include FIRST and LAST collapsible
+						// no matter which collapsible is clicked 
+						collapsible = $el.find('.ui-collapsible').first().add( $el.find('.ui-collapsible').eq( $el.find('.ui-collapsible').length-1)  );
+
+						// xxx frequent - 12c. set isCollapse and call tog()
+						if ( event.type == "expand" ){
+							isCollapse = false;
+							tog();
+						// xxx frequent - 12d. why did I do this check here...
+						// probably to detect when all collapsibles are collapsed
+						} else if ( $el.find('.ui-collapsible').length == $el.find('.ui-collapsible-collapsed').length ) {
+							isCollapse = true;
+							tog();
+						}
+					// xxx frequent - 12e. regular collapsibles
+					} else if (collapsible.jqmData( "collapsible-last" ) && !!o.inset ) {
+						tog();
+					}
+
+					// xxx frequent - 12f [removed to tog()]
+					// if ( collapsible.jqmData( "collapsible-last" ) && !!o.inset ) {
+					//	collapsible.find( ".ui-collapsible-heading" ).first()
+					//		.find( "a" ).first()
+					//		.toggleClass( "ui-corner-bottom", isCollapse )
+					//		.find( ".ui-btn-inner" )
+					//		.toggleClass( "ui-corner-bottom", isCollapse );
+					//	collapsible.find( ".ui-collapsible-content" ).toggleClass( "ui-corner-bottom", !isCollapse );
+					//}
 				})
 				.bind( "expand", function( event ) {
 					var closestCollapsible = $( event.target )
@@ -5379,17 +5419,18 @@ $.widget( "mobile.collapsibleset", $.mobile.widget, {
 		// That was causing https://github.com/jquery/jquery-mobile/issues/4116
 		expanded.trigger( "expand" );
 	},
-	
+
 	refresh: function() {
 		var $el = this.element,
 			o = this.options,
 			collapsiblesInSet = $el.children( ":jqmData(role='collapsible')" );
 
 		$.mobile.collapsible.prototype.enhance( collapsiblesInSet.not( ".ui-collapsible" ) );
+		
 		// clean up borders
-		if ( !!o.inset  ) {
+		if ( !!o.inset ) {
 			collapsiblesInSet.each(function() {
-			$( this ).jqmRemoveData( "collapsible-last" )
+				$( this ).jqmRemoveData( "collapsible-last" )
 					.find( ".ui-collapsible-heading" )
 					.find( "a" ).first()
 					.removeClass( "ui-corner-top ui-corner-bottom" )
@@ -5397,6 +5438,7 @@ $.widget( "mobile.collapsibleset", $.mobile.widget, {
 					.removeClass( "ui-corner-top ui-corner-bottom" );
 			});
 
+			// xxx frequent - 13. toggling corners using the toggleCorners array
 			collapsiblesInSet.first()
 				.find( "a" )
 					.first()
@@ -5412,9 +5454,7 @@ $.widget( "mobile.collapsibleset", $.mobile.widget, {
 					.find( ".ui-btn-inner" )
 						.addClass( toggleCorners[1] );
 		} 
-		
 	}
-	
 });
 
 //auto self-init widgets

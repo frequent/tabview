@@ -11,7 +11,7 @@ define( [ "jquery", "../jquery.mobile.widget", "./collapsible" ], function( $ ) 
 
 $.widget( "mobile.collapsibleset", $.mobile.widget, {
 	options: {
-		initSelector: ":jqmData(role='collapsible-set')"
+		initSelector: ":jqmData(role='collapsible-set')",
 		// xxx frequent - 1. add jqm grid
 		// xxx frequent - 2. add inset, because otherwise it is not inherited as an option
 		// I think this is a bug in JQM, because without declaring here, 
@@ -24,9 +24,10 @@ $.widget( "mobile.collapsibleset", $.mobile.widget, {
 		var $el = this.element.addClass( "ui-collapsible-set" ),
 			// xxx frequent - 3. add direction as additional option
 			// [removed] o = this.options;
-			o = $.extend({  direction: $el.jqmData("type") || "" }, this.options ),
-			// xxx frequent - 4. add toggleCorners so regular and horizontal collapsibles can be handled with a single array
-			toggleCorners = o.direction == "horizontal" ? [ "ui-corner-tl ui-corner-bl","ui-corner-tr ui-corner-br" ] : ["ui-corner-top ", "ui-corner-bottom" ];
+			o = $.extend({  direction: $el.jqmData("type") || "" }, this.options );
+			
+		// xxx frequent - 4. add toggleCorners so regular and horizontal collapsibles can be handled with a single array
+		toggleCorners = o.direction == "horizontal" ? [ "ui-corner-tl ui-corner-bl","ui-corner-tr ui-corner-br" ] : ["ui-corner-top ", "ui-corner-bottom" ];
 
 		// xxx frequent - 5. add horizontal class and grid
 		if ( o.direction == "horizontal" ) {
@@ -86,10 +87,11 @@ $.widget( "mobile.collapsibleset", $.mobile.widget, {
 								}
 							}
 						};
+					
 					// xxx frequent - 11. This needs to be outside of tog()
 					// otherwise only first and last collapsible content gets
 					// bottom corners toggled
-					if ( !!o.inset ){
+					if ( !!o.inset && ( o.direction == "horizontal" || collapsible.jqmData( "collapsible-last" ) ) ) {
 						collapsible.find( ".ui-collapsible-content" ).toggleClass( "ui-corner-bottom", !isCollapse );
 						}
 
