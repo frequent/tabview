@@ -19,6 +19,7 @@ $.widget( "mobile.collapsible", $.mobile.widget, {
 		contentTheme: null,
 		inset: true,
 		mini: false,
+		// xxx frequent - 1. add direction
 		direction: ""
 		initSelector: ":jqmData(role='collapsible')",
 	},
@@ -32,7 +33,6 @@ $.widget( "mobile.collapsible", $.mobile.widget, {
 			expandedIcon = $el.jqmData( "expanded-icon" ) || o.expandedIcon,
 			collapsibleContent = collapsible.wrapInner( "<div class='ui-collapsible-content'></div>" ).children( ".ui-collapsible-content" ),
 			collapsibleSet = $el.closest( ":jqmData(role='collapsible-set')" ).addClass( "ui-collapsible-set" );
-			
 		// Replace collapsibleHeading if it's a legend
 		if ( collapsibleHeading.is( "legend" ) ) {
 			collapsibleHeading = $( "<div role='heading'>"+ collapsibleHeading.html() +"</div>" ).insertBefore( collapsibleHeading );
@@ -41,7 +41,7 @@ $.widget( "mobile.collapsible", $.mobile.widget, {
 
 		// If we are in a collapsible set
 		if ( collapsibleSet.length ) {
-			// check for direction
+			// xxx frequent - 2. check for direction
 			if ( collapsibleSet.jqmData( "type" ) == "horizontal" ){
 				o.direction = "horizontal";
 			}
@@ -80,13 +80,14 @@ $.widget( "mobile.collapsible", $.mobile.widget, {
 			if ( !o.theme ) {
 				o.theme = $.mobile.getInheritedTheme( $el, "c" );
 			}
-		}	
+		}
 		if ( !!o.inset ) {
 			collapsible.addClass( "ui-collapsible-inset" );
 		}
+
 		collapsibleContent.addClass( ( o.contentTheme ) ? ( "ui-body-" + o.contentTheme ) : "");
 
-		// default to no-icon in horizontal set
+		// xxx frequent - 3. set default to "no icon" in horizontal collapsbles
 		collapsedIcon = $el.jqmData( "collapsed-icon" ) || o.collapsedIcon || ( o.direction == "horizontal" ? undefined : "plus" );
 		expandedIcon = $el.jqmData( "expanded-icon" ) || o.expandedIcon || ( o.direction == "horizontal" ? undefined : "minus" );
 
@@ -102,7 +103,7 @@ $.widget( "mobile.collapsible", $.mobile.widget, {
 				.buttonMarkup({
 					shadow: false,
 					corners: false,
-					// remove iconpos in horizontal sets, if no collapsed-icon is set
+					// xxx - frequent 4. remove iconpos in horizontal sets, if no collapsed-icon is set
 					iconpos: $el.jqmData( "iconpos" ) || o.iconPos || ( collapsedIcon == undefined ? null : "left" ),
 					icon: collapsedIcon,
 					mini: o.mini,
@@ -134,12 +135,13 @@ $.widget( "mobile.collapsible", $.mobile.widget, {
 							// logic or cause same icon for expanded/collapsed state would remove the ui-icon-class
 							.toggleClass( "ui-icon-" + collapsedIcon, ( isCollapse || expandedIcon === collapsedIcon )  )
 						.end()
+						// xxx frequent - 5. maintain active class on active tabs in horizontal collapsibles
 						.find( "a" ).first()[o.direction == 'horizontal' ? 'toggleClass':'removeClass']( $.mobile.activeBtnClass , ( o.direction == "horizontal" ? !isCollapse : false ) );
-
+						
 					$this.toggleClass( "ui-collapsible-collapsed", isCollapse );
 					collapsibleContent.toggleClass( "ui-collapsible-content-collapsed", isCollapse ).attr( "aria-hidden", isCollapse );
-					
-					// prevent last collapsible in set to get ui-corner-bottom
+
+					// xxx frequent - 6. prevent last collapsible from getting bottom corners
 					if ( contentTheme && !!o.inset && ( !collapsibleSet.length || collapsible.jqmData( "collapsible-last" ) )  && o.direction != "horizontal" ) {
 						collapsibleHeading
 							.find( "a" ).first().add( collapsibleHeading.find( ".ui-btn-inner" ) )
