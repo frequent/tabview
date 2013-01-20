@@ -1,0 +1,35 @@
+{
+    "name": "tabview",
+    "title": "jQuery Mobile tabview",
+    "description": "Tabs for jQuery Mobile, modified collapsible/collapsible-set widgets.",
+    "keywords": [
+        "jQuery",
+        "Mobile",
+        "Tabs"
+    ],
+    "version": "0.2.0",
+    "author": {
+        "name": "Sven Franck",
+        "url": "https://github.com/frequent"
+    },
+    "maintainers": [
+        {
+            "name": "Sven Franck",
+            "email": "svenfranck@yahoo.com",
+            "url": "https://github.com/frequent"
+        }
+    ],
+    "licenses": [
+        {
+            "type": "MIT",
+            "url": "https://github.com/jquery/jquery-color/blob/2.1.2/MIT-LICENSE.txt"
+        }
+    ],
+    "bugs": "https://github.com/frequent/tabview/issues",
+    "homepage": "http://www.franckreich.de/jqm/tabview/demo.html",
+    "docs": "https://github.com/frequent/tabview/",
+    "dependencies": {
+        "jquery": ">=1.5",
+        "jquery mobile": ">1.2"
+    }
+}
