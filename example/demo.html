@@ -3,9 +3,9 @@
 <head>
 	<meta charset="utf-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1"> 
-	<title>title</title> 
+	<title>JQM Tabs</title> 
 	<link rel="stylesheet" href="latest.css" />
-	<script src="http://code.jquery.com/jquery-1.8.3.min.js"></script>
+	<script src="http://code.jquery.com/jquery-1.9.1.min.js"></script>
 	<script src="latest.js"></script>
 
 </head> 
@@ -19,7 +19,7 @@
 		<p>Regular collapsible set</p>
 		
 		<div data-role="collapsible-set" data-theme="c" data-content-theme="c">
-			<div data-role="collapsible" data-iconpos="right">
+			<div data-role="collapsible" data-collapsed="true" data-iconpos="right">
 				<h2>One very long collapsible heading</h2>
 				<ul data-role="listview" data-filter-theme="c" data-divider-theme="d">
 					<li><a href="#">A</a></li>
@@ -29,7 +29,7 @@
 					<li><a href="#">E</a></li>
 				</ul>
 			</div>
-			<div data-role="collapsible" data-iconpos="right">
+			<div data-role="collapsible" data-collapsed="true" data-iconpos="right">
 				<h2>Items DEF</h2>
 				<ul data-role="listview" >
 					<li><a href="#">D</a></li>
@@ -37,7 +37,7 @@
 					<li><a href="#">F</a></li>
 				</ul>
 			</div>
-			<div data-role="collapsible" data-iconpos="right">
+			<div data-role="collapsible" data-collapsed="true" data-iconpos="right">
 				<h2>Items GHI</h2>
 				<ul data-role="listview" >
 					<li><a href="#">G</a></li>
@@ -49,7 +49,7 @@
 		<br><br><br>	
 		<p>Collapsible set with <i>data-type="horizontal"</i></p>
 			
-		<div data-role="collapsible-set"  data-type="horizontal" data-theme="c" >
+		<div data-role="collapsible-set" data-type="horizontal" data-theme="c" >
 			<div data-role="collapsible">
 				<h2>One very long collapsible heading</h2>
 				<div class="padme">
@@ -177,17 +177,17 @@
 				</div>
 			</div>
 			<br><br><br>
-      <p>Using data-create = false (without enhancing markup</p>
-			<div data-role="collapsible-set" data-create="false" data-type="horizontal" data-theme="c" data-content-theme="c">
-				<div data-role="collapsible">
+      <p>Using data-markup = false (without enhancing markup)</p>
+			<div data-role="collapsible-set" data-markup="false" data-type="horizontal" data-theme="c" data-content-theme="c">
+				<div data-role="collapsible" data-markup="false">
 					<h2>One very long collapsible heading</h2>
 					<p>Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet.</p>
 				</div>
-				<div data-role="collapsible">
+				<div data-role="collapsible" data-markup="false">
 					<h2>Items DEF</h2>
 					<p>Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet.</p>
 				</div>
-				<div data-role="collapsible">
+				<div data-role="collapsible" data-markup="false">
 					<h2>Items GHI</h2>
 					<p>Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet.</p>
 				</div>

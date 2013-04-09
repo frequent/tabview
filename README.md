@@ -3,7 +3,7 @@ tabview
 
 tabs for Jquery Mobile 
 
-version based on JQM 1.3.0 Beta (January 2013)
+version based on JQM 1.3.1 latest
 
 1. How to use - Tabs  
 Add `data-type="horizontal"` to a collapsible set. Currently a maximum of 5 tabs are possible (based on JQM grid).
