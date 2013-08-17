@@ -3,20 +3,33 @@ tabview
 
 tabs for Jquery Mobile 
 
-version based on JQM 1.3.0 Beta (January 2013)
+version based on JQM 1.4.0a2 (August 2013)
 
-1. How to use - Tabs  
-Add `data-type="horizontal"` to a collapsible set. Currently a maximum of 5 tabs are possible (based on JQM grid).
+Changelog:
+=========
+**0.3.0**
+- updated to JQM 1.4.0a2
+- changed `data-type="horizontal"` to `data-type="tabs"`
+- switched to fully CSS generated tabs
+- added fallback to regular collapsible-set below 40em screen width (using media queries)
 
-2. How to use - Events Only   
-Add `data-create="false"` to a collapsible set or collapsible. This will only add events and methods, but NO markup. Use this if you build enhanced widget (a) on the server,  (b) yourself on the client from cacheable HTML templates.
+Notes:  
+Tabs are now easier to manage using pure CSS. Just add the number of tabs you need
+using `data-tabs="1-10"` to the collapsible set. Also, by default tabs fallback
+to a regular collapsible-sets on small screens (see example). If you don't want
+this, just remove the media query and tabs will be tabs at any screen size.
+
+Todos:
+- Fix bottom left corner of first tab
+- Support data-icon="false" for text-only tabs
+- Try two rows of tabs on small screens
+
+
+1. How to use
+Add `data-type="tabs"` to a collapsible set as well as `data-tabs="1-10"` to denote the number of tabs you need.
   
 2. Options
-Tabview supports most of the regular collapsible set options:
+Tabview supports the same options as regular collapsible sets.
 
-- `data-inset="false"` = remove corners, stretch tabs full screen
-- `data-collapsedIcon/data-expandedIcon="___"` = by default tabs are without icons. To add icons, specifiy collapsed/expanded icons on the collapsible
-- `data-content-theme="_"` = add borders and background to the collapsible content section
-
-3. Demo
+2. Demo
 Can be found here:  [JQM tabview plugin](http://www.franckreich.de/jqm/tabview/demo.html)

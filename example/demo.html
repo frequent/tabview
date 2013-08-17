@@ -1,237 +1,182 @@
-<!DOCTYPE html>
-<html>
-<head>
+	<!DOCTYPE html>
+	<html>
+
+	<head>
+	<title>JQM tabs</title>
 	<meta charset="utf-8">
-	<meta name="viewport" content="width=device-width, initial-scale=1"> 
-	<title>title</title> 
-	<link rel="stylesheet" href="latest.css" />
-	<script src="http://code.jquery.com/jquery-1.8.3.min.js"></script>
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<link rel="stylesheet"  href="http://code.jquery.com/mobile/git/jquery.mobile-git.css"> 
+	<style type="text/css">
+	/* ui-collapsible-tabs, small screen falls back to top-down collapsible set */
+	@media (min-width: 40em) {
+		.ui-collapsible-tabs {
+			display: table;
+			table-layout: fixed;
+			width: 100%;
+		}
+		.ui-collapsible-tabs .ui-collapsible {
+			display: table-cell;
+		}
+		.ui-collapsible-tabs .ui-collapsible-content {
+			margin: 0;
+			padding: 0;
+			position: relative;
+		}
+		/* content width - IE8 ignores this, so falls back to regular collapsible-set */
+		.ui-collapsible-tabs[data-tabs="10"] .ui-collapsible .ui-collapsible-content {width: 1000%; }
+		.ui-collapsible-tabs[data-tabs="9"] .ui-collapsible .ui-collapsible-content {width: 900%; }
+		.ui-collapsible-tabs[data-tabs="8"] .ui-collapsible .ui-collapsible-content {width: 800%;}
+		.ui-collapsible-tabs[data-tabs="7"] .ui-collapsible .ui-collapsible-content {width: 700%;}
+		.ui-collapsible-tabs[data-tabs="6"] .ui-collapsible .ui-collapsible-content {width: 600%;}
+		.ui-collapsible-tabs[data-tabs="5"] .ui-collapsible .ui-collapsible-content {width: 500%;}
+		.ui-collapsible-tabs[data-tabs="4"] .ui-collapsible .ui-collapsible-content {width: 400%;}
+		.ui-collapsible-tabs[data-tabs="3"] .ui-collapsible .ui-collapsible-content {width: 300%;}
+		.ui-collapsible-tabs[data-tabs="2"] .ui-collapsible .ui-collapsible-content {width: 200%;}
+		.ui-collapsible-tabs[data-tabs="1"] .ui-collapsible .ui-collapsible-content {width: 100%;}
+
+		/* positioning (can use nth:child because IE8 does not care for the above */
+		.ui-collapsible-tabs .ui-collapsible:nth-child(1) .ui-collapsible-content {left: 0;}
+		.ui-collapsible-tabs .ui-collapsible:nth-child(2) .ui-collapsible-content {left: -100%;}
+		.ui-collapsible-tabs .ui-collapsible:nth-child(3) .ui-collapsible-content {left: -200%;}
+		.ui-collapsible-tabs .ui-collapsible:nth-child(4) .ui-collapsible-content {left: -300%;}
+		.ui-collapsible-tabs .ui-collapsible:nth-child(5) .ui-collapsible-content {left: -400%;}
+		.ui-collapsible-tabs .ui-collapsible:nth-child(6) .ui-collapsible-content {left: -500%;}
+		.ui-collapsible-tabs .ui-collapsible:nth-child(7) .ui-collapsible-content {left: -600%;}
+		.ui-collapsible-tabs .ui-collapsible:nth-child(8) .ui-collapsible-content {left: -700%;}
+		.ui-collapsible-tabs .ui-collapsible:nth-child(9) .ui-collapsible-content {left: -800%;}
+		.ui-collapsible-tabs .ui-collapsible:nth-child(10) .ui-collapsible-content {left: -900%;}
+
+		/* corners */
+		/* hardcode inset content-theme bottom corners, because can't inherit 0 on bottom left/right first/last tab */
+		.ui-collapsible-tabs .ui-collapsible-inset.ui-collapsible-themed-content:not(.ui-collapsible-collapsed) .ui-collapsible-content {
+			-webkit-border-bottom-left-radius: .6em;
+			border-bottom-left-radius: .6em;
+			-webkit-border-bottom-right-radius: .6em;
+			border-bottom-right-radius: .6em;
+		}
+		.ui-collapsible-tabs .ui-collapsible.ui-first-child {
+			-webkit-border-top-left-radius: inherit;
+			border-top-left-radius: inherit;
+			-webkit-border-top-right-radius: 0;
+			border-top-right-radius: 0;
+			-webkit-border-bottom-right-radius: 0;
+			border-bottom-right-radius: 0;
+		}
+		.ui-collapsible-tabs .ui-collapsible.ui-last-child {
+			-webkit-border-top-right-radius: inherit;
+			border-top-right-radius: inherit;
+			-webkit-border-top-left-radius: 0;
+			border-top-left-radius: 0;
+			-webkit-border-bottom-left-radius: 0;
+			border-bottom-left-radius: 0;
+		}
+		/* straight corner last-tab if one tab is open */
+		.ui-collapsible-tabs .ui-collapsible:not(.ui-collapsible-collapsed) ~ .ui-collapsible.ui-last-child {
+			-webkit-border-bottom-right-radius: 0;
+			border-bottom-right-radius: 0;
+		}
+		/* straight corner first-tab... this needs another class */
+		.ui-collapsible-tabs .ui-collapsible.ui-first-child.ui-collapsible-collapsed {
+			-webkit-border-bottom-left-radius: inherit;
+			border-bottom-left-radius: inherit;
+		}
+		/* because this does not work with preceeding siblings
+		.ui-collapsible-tabs .ui-collapsible:not(.ui-collapsible-collapsed) ~ .ui-collapsible.ui-first-child {
+			-webkit-border-bottom-left-radius: 0;
+			border-bottom-left-radius: 0;
+		}
+		*/
+		.ui-collapsible-tabs .ui-collapsible.ui-collapsible-collapsed.ui-first-child,
+		.ui-collapsible-tabs .ui-collapsible.ui-first-child {
+			border-bottom-left-radius: 0;
+			-webkit-border-bottom-left-radius: 0;
+		}
+		/* hide status text */
+		.ui-collapsible-tabs  .ui-collapsible-heading-status {
+			position: absolute !important;
+			left: -9999px;
+			clip: rect(1px 1px 1px 1px);
+			clip: rect(1px,1px,1px,1px);
+		}
+		/* borders */
+		.ui-collapsible-tabs .ui-collapsible:not(.ui-collapsible-collapsed) h1 a {
+			border-bottom-color: transparent;
+		}
+		.ui-collapsible-tabs .ui-collapsible .ui-collapsible-content {
+			border-top-color: transparent;
+			border-top-width: 1px; /* magic */
+		}
+		.ui-collapsible-tabs .ui-collapsible + .ui-collapsible h1 a {
+			border-left-color: transparent;
+		}
+	}
+	</style>
+
+	<script src="http://code.jquery.com/jquery-1.10.1.js"></script> 
+	<!-- <script src="http://code.jquery.com/mobile/git/jquery.mobile-git.js"></script> -->
 	<script src="latest.js"></script>
 
-</head> 
-<body>
-<div data-role="page">
-	<div data-role="header" data-theme="a">
-		<h1>Tabview</h1>
-	</div>
-	<div data-role="content">
+
+	</head>
+	<body>
+
+	<div data-role="page">
+
+		<div data-role="header">
+			<h1>Collapsible Tabs</h1>
+		</div><!-- /header -->
+		<div data-role="content">
 		
-		<p>Regular collapsible set</p>
-		
-		<div data-role="collapsible-set" data-theme="c" data-content-theme="c">
-			<div data-role="collapsible" data-iconpos="right">
-				<h2>One very long collapsible heading</h2>
-				<ul data-role="listview" data-filter-theme="c" data-divider-theme="d">
-					<li><a href="#">A</a></li>
-					<li><a href="#">B</a></li>
-					<li><a href="#">C</a></li>
-					<li><a href="#">D</a></li>
-					<li><a href="#">E</a></li>
-				</ul>
-			</div>
-			<div data-role="collapsible" data-iconpos="right">
-				<h2>Items DEF</h2>
-				<ul data-role="listview" >
-					<li><a href="#">D</a></li>
-					<li><a href="#">E</a></li>
-					<li><a href="#">F</a></li>
-				</ul>
-			</div>
-			<div data-role="collapsible" data-iconpos="right">
-				<h2>Items GHI</h2>
-				<ul data-role="listview" >
-					<li><a href="#">G</a></li>
-					<li><a href="#">H</a></li>
-					<li><a href="#">I</a></li>
-				</ul>
-			</div>
-		</div>
-		<br><br><br>	
-		<p>Collapsible set with <i>data-type="horizontal"</i></p>
-			
-		<div data-role="collapsible-set"  data-type="horizontal" data-theme="c" >
-			<div data-role="collapsible">
-				<h2>One very long collapsible heading</h2>
-				<div class="padme">
-					<img src="sample.jpg">
-				</div>
-			</div>
-			<div data-role="collapsible">
-				<h2>Img</h2>
-				<div class="padme">
-					<img src="sample.jpg">
-				</div>
-			</div>
-			<div data-role="collapsible" data-collapsed-icon="gear" data-expanded-icon="arrow-l">
-				<h2>Form</h2>
-				<div>
-					<form>
-						<ul data-role="listview" data-divider-theme="a">
-							<li data-role="list-divider"><span class="ui-divider-text bd bem">Contact</span></li>
-							<li data-role="fieldcontain">
-								<label for="name_last">First Name</label>
-								<input type="text" name="name_last" readonly="readonly" id="name_last" value="Doe"  />
-							</li>
-							<li data-role="fieldcontain">
-								<label for="name_first">Last Name</label>
-								<input type="text" name="name_first" readonly="readonly" id="name_first" value="John"  />
-							</li>
-							<li data-role="fieldcontain">
-								<label for="login">Login</label>
-								<input type="text" name="login" readonly="readonly" id="login" value="johndoe"  />
-							</li>
-							<li data-role="fieldcontain">
-								<label for="pass">Password</label>
-								<input type="password" name="pass" readonly="readonly" id="pass" value="secret"  />
-							</li>
-							<li data-role="fieldcontain">
-								<label for="repeat">Repeat</label>
-								<input type="text" name="repeat" readonly="readonly" id="repeat" value="secret"  />
-							</li>
-							<li data-role="fieldcontain">
-								<label for="email">Email</label>
-								<input type="text" name="email" readonly="readonly" id="email" value="johndoe@somewhere.org"  />
-							</li>			
-						</ul>
+		<div data-role="collapsible-set" data-type="tabs" data-tabs="10" data-theme="a" data-content-theme="a">
+
+						<div data-role="collapsible" data-collapsed="false">
+							<h1>One</h1>
+							<p>One</p>
 						</div>
-						<div data-role="controlgroup" data-type="horizontal">
-							<input type="submit" disabled="disabled" value="submit" data-theme="e" />
-							<input type="reset" disabeld="disabled" value="reset" />
+						<div data-role="collapsible">
+							<h1>Two</h1>
+							<p>Two
 						</div>
-					</form>
+						<div data-role="collapsible">
+						<h1>Three</h1>
+							<p>Three</p>
+						</div>
+						<div data-role="collapsible">
+							<h1>Four</h1>
+							<p>Four</p>
+						</div>
+						<div data-role="collapsible">
+							<h1>Five</h1>
+							<p>Five</p>
+						</div>
+						<div data-role="collapsible">
+							<h1>Six</h1>
+							<p>Six</p>
+						</div>
+						<div data-role="collapsible">
+							<h1>Seven</h1>
+							<p>Seven</p>
+						</div>
+						<div data-role="collapsible">
+							<h1>Eight</h1>
+							<p>Eight</p>
+						</div>
+						<div data-role="collapsible">
+							<h1>Nine</h1>
+							<p>Nine</p>
+						</div>
+						<div data-role="collapsible">
+							<h1>Ten</h1>
+							<p>Ten</p>
+						</div>
+					</div>
 				</div>
-			
-				<div data-role="collapsible">
-					<h2>Text</h2>
-						<article>
-						<p>
-							Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet.   
-
-	Duis autem vel eum iriure dolor in hendrerit in vulputate velit esse molestie consequat, vel illum dolore eu feugiat nulla facilisis at vero eros et accumsan et iusto odio dignissim qui blandit praesent luptatum zzril delenit augue duis dolore te feugait nulla facilisi. Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat.   
-
-	Ut wisi enim ad minim veniam, quis nostrud exerci tation ullamcorper suscipit lobortis nisl ut aliquip ex ea commodo consequat. Duis autem vel eum iriure dolor in hendrerit in vulputate velit esse molestie consequat, vel illum dolore eu feugiat nulla facilisis at vero eros et accumsan et iusto odio dignissim qui blandit praesent luptatum zzril delenit augue duis dolore te feugait nulla facilisi.   
-
-	Nam liber tempor cum soluta nobis eleifend option congue nihil imperdiet doming id quod mazim placerat facer possim assum. Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat. Ut wisi enim ad minim veniam, quis nostrud exerci tation ullamcorper suscipit lobortis nisl ut aliquip ex ea commodo consequat.   
-
-	Duis autem vel eum iriure dolor in hendrerit in vulputate velit esse molestie consequat, vel illum dolore eu feugiat nulla facilisis.   
-
-	At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet, consetetur sadipscing elitr, At accusam aliquyam diam diam dolore dolores duo eirmod eos erat, et nonumy sed tempor et et invidunt justo labore Stet clita ea et gubergren, kasd magna no rebum. sanctus sea sed takimata ut vero voluptua. est Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat.   
-
-	Consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus.   
-
-	Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet.   
-
-	Duis autem vel eum iriure dolor in hendrerit in vulputate velit esse molestie consequat, vel illum dolore eu feugiat nulla facilisis at vero eros et accumsan et iusto odio dignissim qui blandit praesent luptatum zzril delenit augue duis dolore te feugait nulla facilisi. Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat.   
-
-	Ut wisi enim ad minim veniam, quis nostrud exerci tation ullamcorper suscipit lobortis nisl ut aliquip ex ea commodo consequat. Duis autem vel eum iriure dolor in hendrerit in vulputate velit esse molestie consequat, vel illum dolore eu feugiat nulla facilisis at vero eros et accumsan et iusto odio dignissim qui blandit praesent luptatum zzril delenit augue duis dolore te feugait nulla facilisi.   
-
-	Nam liber tempor cum soluta nobis eleifend option congue nihil imperdiet doming id quod mazim placerat facer possim assum. Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat. Ut wisi enim ad minim veniam, quis nostrud exerci tation ullamcorper suscipit lobortis nisl ut aliquip ex ea commodo
-						</p>
-					<article>
-				</div>
-				<div data-role="collapsible">
-					<h2>Mail</h2>
-					<ul data-role="listview">
-						<li data-role="list-divider">Mailbox<span class="ui-li-count">Elements</span></li>
-						<li>
-							<a href="index.html">
-								<h3>Header</h3>
-								<p><strong>Element subject</strong></p>
-								<p>hendrerit in vulputate velit esse molestie consequat, vel illum dolore eu feugiat</p>
-								<p class="ui-li-aside"><strong>4/16/2012</strong></p>
-							</a>
-						</li>
-						<li>
-							<a href="index.html">
-								<h3>Header</h3>
-								<p><strong>Element subject</strong></p>
-								<p>hendrerit in vulputate velit esse molestie consequat, vel illum dolore eu feugiat</p>
-								<p class="ui-li-aside"><strong>4/16/2012</strong></p>
-							</a>
-						</li>
-						<li>
-							<a href="index.html">
-								<h3>Header</h3>
-								<p><strong>Element subject</strong></p>
-								<p>hendrerit in vulputate velit esse molestie consequat, vel illum dolore eu feugiat</p>
-								<p class="ui-li-aside"><strong>4/16/2012</strong></p>
-							</a>
-						</li>
-					</ul>
-				</div><!-- coll -->
-			</div><!-- set -->
-			<br><br><br>
-			<p>Using content-theme</p>
-			<div data-role="collapsible-set" data-type="horizontal" data-theme="c" data-content-theme="c">
-				<div data-role="collapsible">
-					<h2>One very long collapsible heading</h2>
-					<p>Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet.</p>
-				</div>
-				<div data-role="collapsible">
-					<h2>Items DEF</h2>
-					<p>Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet.</p>
-				</div>
-				<div data-role="collapsible">
-					<h2>Items GHI</h2>
-					<p>Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet.</p>
-				</div>
-			</div>
-			<br><br><br>
-      <p>Using data-create = false (without enhancing markup</p>
-			<div data-role="collapsible-set" data-create="false" data-type="horizontal" data-theme="c" data-content-theme="c">
-				<div data-role="collapsible">
-					<h2>One very long collapsible heading</h2>
-					<p>Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet.</p>
-				</div>
-				<div data-role="collapsible">
-					<h2>Items DEF</h2>
-					<p>Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet.</p>
-				</div>
-				<div data-role="collapsible">
-					<h2>Items GHI</h2>
-					<p>Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet.</p>
-				</div>
-			</div>
-			<br><br><br>
-			<p>Using icons</p>
-			<div data-role="collapsible-set" data-type="horizontal" data-theme="c" data-content-theme="c">
-				<div data-role="collapsible" data-collapsed-icon="gear" data-expanded-icon="arrow-l">
-					<h2>One very long collapsible heading</h2>
-					<p>Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet.</p>
-				</div>
-				<div data-role="collapsible" data-collapsed-icon="delete" data-expanded-icon="arrow-l">
-					<h2>Items DEF</h2>
-					<p>Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet.</p>
-				</div>
-				<div data-role="collapsible" data-collapsed-icon="search" data-expanded-icon="arrow-l">
-					<h2>Items GHI</h2>
-					<p>Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet.</p>
-				</div>
-			</div>
-			<br><br><br>
-			<p>No inset</p>
-			<div data-role="collapsible-set" data-type="horizontal" data-theme="c" data-content-theme="c" data-inset="false">
-				<div data-role="collapsible">
-					<h2>One very long collapsible heading</h2>
-					<p>Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet.</p>
-				</div>
-				<div data-role="collapsible">
-					<h2>Items DEF</h2>
-					<p>Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet.</p>
-				</div>
-				<div data-role="collapsible">
-					<h2>Items GHI</h2>
-					<p>Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet.</p>
-				</div>
-			</div>
-			<br><br><br>
 		
-			
-			
-		
-			
-			
-		</div><!-- content -->
-	</div><!-- page -->
-</body>
-</html>
+		</div><!-- /content -->
+
+	</div><!-- /page -->
+
+
+
+	</body>
+	</html>
