@@ -101,6 +101,7 @@
 .ui-collapsible-set .ui-collapsible.ui-first-child {
 	margin-top: 0;
 }
+
 /* ui-collapsible-tabs - above 40em */
 @media (min-width: 40em) {
 	.ui-collapsible-tabs {

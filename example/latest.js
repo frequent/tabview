@@ -1,6 +1,6 @@
 /*!
 * jQuery Mobile 1.4.0pre
-* Git HEAD hash: 806402492c187148f2b879943c2d4627b9f22d0c <> Date: Fri Aug 16 2013 20:10:53 UTC
+* Git HEAD hash: b29781655bebeaed9df2b4679a6ab042ce0fc785 <> Date: Sat Aug 17 2013 13:33:09 UTC
 * http://jquerymobile.com
 *
 * Copyright 2010, 2013 jQuery Foundation, Inc. and other contributors
@@ -6887,7 +6887,7 @@ $.widget( "mobile.collapsibleset", $.extend( {
 
 	options: $.extend( {
 		enhanced: false,
-		type: null,
+		type: null
 	}, $.mobile.collapsible.defaults ),
 
 	_handleCollapsibleExpand: function( event ) {
@@ -6914,7 +6914,7 @@ $.widget( "mobile.collapsibleset", $.extend( {
 				( opts.corners && opts.inset ? "ui-corner-all " : "" ) );
 			if (opts.type) {
 				elem.addClass( "ui-collapsible-tabs" );
-			}
+			} 
 			this.element.find( $.mobile.collapsible.initSelector ).collapsible();
 		}
 
