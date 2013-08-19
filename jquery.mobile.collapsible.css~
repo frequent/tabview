@@ -186,10 +186,11 @@
 		-webkit-border-bottom-left-radius: 0;
 	}
 	/* hide status text */
-	.ui-collapsible-tabs .ui-collapsible-heading-status {
+	.ui-collapsible-tabs {
 		position: absolute !important;
 		left: -9999px;
 		clip: rect(1px 1px 1px 1px);
+		clip: rect(1px,1px,1px,1px);
 	}
 	/* borders */
 	.ui-collapsible-tabs .ui-collapsible:not(.ui-collapsible-collapsed) h1 a {
